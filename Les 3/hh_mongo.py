@@ -152,3 +152,4 @@ elif mode == 1:
                 pprint(doc)
     except:
         pprint('Incorrect salary!')
+й
