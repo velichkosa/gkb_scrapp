@@ -7,6 +7,7 @@ load_dotenv()
 api_key = os.environ.get('OW_KEY', None)
 
 
+
 def cur_weather_data(city=input('Set city: ')):
     r = requests.get(f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric')
     print(f'Current temp in {city}: {round(r.json()["main"]["temp"], 1)}\u00b0C \n'
