@@ -1,13 +1,9 @@
-# -*- coding: cp1251 -*-
-
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from datetime import datetime, timedelta
 from fp.fp import FreeProxy
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
-from pprint import pprint
 import ast
 from pymongo import MongoClient
 import time
@@ -15,7 +11,7 @@ import time
 MONGO_HOST = "localhost"
 MONGO_PORT = 27017
 MONGO_DB = "mvideo"
-MONGO_COLLECTION = "new_items"
+MONGO_COLLECTION = "newitems"
 
 proxies = FreeProxy().get_proxy_list()
 headers = {
@@ -28,26 +24,26 @@ driver = webdriver.Chrome(executable_path='./chromedriver')
 
 def collect_mail():
     driver.get('https://www.mvideo.ru/')
-    xpath_next = "//*[contains(text(), 'Новинки')]//..//..//..//div[contains(@class,'gallery-content accessories-new " \
+    xpath_next = "//*[contains(text(), 'РќРѕРІРёРЅРєРё')]//..//..//..//div[contains(@class,'gallery-content accessories-new " \
                  "')]//a[@class='next-btn c-btn c-btn_scroll-horizontal c-btn_icon i-icon-fl-arrow-right'] "
-    xpath_new_items = "//*[contains(text(), 'Новинки')]//..//..//..//div[contains(@class,'gallery-content " \
+    xpath_new_items = "//*[contains(text(), 'РќРѕРІРёРЅРєРё')]//..//..//..//div[contains(@class,'gallery-content " \
                       "accessories-new ')]//li//a[@class='fl-product-tile-picture fl-product-tile-picture__link'] "
 
     next = driver.find_elements_by_xpath(xpath_next)
-    while len(next) == 0:  # ищем новинки
+    while len(next) == 0:  # РёС‰РµРј РЅРѕРІРёРЅРєРё
         driver.find_element_by_xpath('//body').send_keys(Keys.PAGE_DOWN)
         driver.implicitly_wait(10)
         next = driver.find_elements_by_xpath(xpath_next)
 
     next_button = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, xpath_next)))
 
-    while len(next) != 0:  # кликаем карусель
+    while len(next) != 0:  # РєР»РёРєР°РµРј РєР°СЂСѓСЃРµР»СЊ
         driver.implicitly_wait(10)
         next_button.click()
         next = driver.find_elements_by_xpath(xpath_next)
         time.sleep(1)
 
-    #  собираем информацию о новинках в контейнер
+    #  СЃРѕР±РёСЂР°РµРј РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ РЅРѕРІРёРЅРєР°С… РІ РєРѕРЅС‚РµР№РЅРµСЂ
     elem = driver.find_elements_by_xpath(xpath_new_items)
     new_items = []
     for items in elem:
